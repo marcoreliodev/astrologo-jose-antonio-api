@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
-import { ulid } from 'ulid';
+import { uuidv7 } from 'uuidv7';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -41,7 +41,7 @@ export class UsersService {
     const password = await argon2.hash(dto.password, { type: argon2.argon2id });
     const user = this.usersRepository.create({
       ...dto,
-      id: ulid(),
+      id: uuidv7(),
       password,
     });
     const saved = await this.usersRepository.save(user);

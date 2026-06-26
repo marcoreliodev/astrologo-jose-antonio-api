@@ -10,7 +10,7 @@ import { Role } from '../common/enums/role.enum';
 
 @Entity('users')
 export class User {
-  @PrimaryColumn({ type: 'char', length: 26 })
+  @PrimaryColumn({ type: 'char', length: 36 })
   id: string;
 
   @Column({ length: 150 })
