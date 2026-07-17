@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { DataSource } from 'typeorm';
 import { User } from './users/user.entity';
+import { Chart } from './charts/charts.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -9,6 +10,6 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'nestuser',
   password: process.env.DB_PASS || 'nestpass',
   database: process.env.DB_NAME || 'nestdb',
-  entities: [User],
+  entities: [User, Chart],
   migrations: ['src/migrations/*.ts'],
 });

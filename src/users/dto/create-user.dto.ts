@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -27,4 +28,9 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Senha é obrigatória' })
   @MinLength(6, { message: 'Senha deve ter no mínimo 6 caracteres' })
   password: string;
+
+  @ApiProperty({ example: true })
+  @IsNotEmpty({ message: 'É necessário aceitar os termos de uso' })
+  @IsBoolean({ message: 'Termos de uso inválido' })
+  acceptedTerms: boolean;
 }

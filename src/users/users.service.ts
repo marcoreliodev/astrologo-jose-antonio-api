@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -37,12 +38,16 @@ export class UsersService {
       where: { email: dto.email },
     });
     if (existing) throw new ConflictException('E-mail já cadastrado');
+    if (!dto.acceptedTerms) {
+      throw new BadRequestException('É necessário aceitar os termos de uso');
+    }
 
     const password = await argon2.hash(dto.password, { type: argon2.argon2id });
     const user = this.usersRepository.create({
       ...dto,
       id: uuidv7(),
       password,
+      acceptedTermsAt: dto.acceptedTerms ? new Date() : undefined,
     });
     const saved = await this.usersRepository.save(user);
 

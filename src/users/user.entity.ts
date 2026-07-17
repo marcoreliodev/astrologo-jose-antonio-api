@@ -29,6 +29,12 @@ export class User {
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
 
+  @Column({ name: 'accepted_terms', default: false })
+  acceptedTerms: boolean;
+
+  @Column({ name: 'accepted_terms_at', type: 'timestamp', nullable: true })
+  acceptedTermsAt: Date | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

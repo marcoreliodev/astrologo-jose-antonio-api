@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { LogsModule } from './logs/logs.module';
 import { User } from './users/user.entity';
+import { Chart } from './charts/charts.entity';
+import { ChartsModule } from './charts/charts.module';
 
 @Module({
   imports: [
@@ -60,7 +62,7 @@ import { User } from './users/user.entity';
         username: config.get('DB_USER', 'nestuser'),
         password: config.get('DB_PASS', 'nestpass'),
         database: config.get('DB_NAME', 'nestdb'),
-        entities: [User],
+        entities: [User, Chart],
         synchronize: config.get('NODE_ENV') !== 'production',
         logging: config.get('NODE_ENV') === 'development',
       }),
@@ -71,6 +73,7 @@ import { User } from './users/user.entity';
     AuthModule,
     AdminModule,
     LogsModule,
+    ChartsModule,
   ],
 })
 export class AppModule {}
