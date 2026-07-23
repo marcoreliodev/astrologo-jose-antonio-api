@@ -11,6 +11,7 @@ import { LogsModule } from './logs/logs.module';
 import { User } from './users/user.entity';
 import { Chart } from './charts/charts.entity';
 import { ChartsModule } from './charts/charts.module';
+import { EphemerisModule } from './ephemeris/ephemeris.module';
 
 @Module({
   imports: [
@@ -74,6 +75,7 @@ import { ChartsModule } from './charts/charts.module';
     AdminModule,
     LogsModule,
     ChartsModule,
+    EphemerisModule,
   ],
 })
 export class AppModule {}
