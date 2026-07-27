@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "typeorm-ts-node-commonjs -d src/data-source.ts migration:generate src/migrations/migration",
     "migration:run": "typeorm-ts-node-commonjs -d src/data-source.ts migration:run",
-    "migration:revert": "typeorm-ts-node-commonjs -d src/data-source.ts migration:revert"
+    "migration:revert": "typeorm-ts-node-commonjs -d src/data-source.ts migration:revert",
+    "seed:admin": "ts-node -r tsconfig-paths/register src/database/seeds/admin.seed.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
