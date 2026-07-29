@@ -11,6 +11,7 @@ import { Chart } from './charts.entity';
 import { CreateChartDto } from './dto/create-chart.dto';
 import { EphemerisService } from './ephemeris.service';
 import { NominatimService } from './nominatim.service';
+import { ReelsService } from 'src/reels/reels.service';
 import { Role } from '../common/enums/role.enum';
 import { User } from '../users/user.entity';
 import { find } from 'geo-tz';
@@ -22,6 +23,7 @@ export class ChartsService {
     private readonly chartsRepository: Repository<Chart>,
     private readonly ephemerisService: EphemerisService,
     private readonly nominatimService: NominatimService,
+    private readonly reelsService: ReelsService,
     @InjectPinoLogger(ChartsService.name)
     private readonly logger: PinoLogger,
   ) {}
@@ -60,14 +62,21 @@ export class ChartsService {
     return saved;
   }
 
-  async findAllByUser(userId: string): Promise<Chart[]> {
-    return this.chartsRepository.find({
+  async findAllByUser(userId: string) {
+    const charts = await this.chartsRepository.find({
       where: { userId },
       order: { createdAt: 'DESC' },
     });
+
+    return charts.map((chart) => ({
+      ...chart,
+      reels: this.reelsService.getReelsForChart(
+        (chart.chartData as any).planets,
+      ),
+    }));
   }
 
-  async findOne(id: string, requester: User): Promise<Chart> {
+  async findOne(id: string, requester: User) {
     const chart = await this.chartsRepository.findOne({ where: { id } });
     if (!chart) throw new NotFoundException('Mapa astral não encontrado');
 
@@ -75,7 +84,11 @@ export class ChartsService {
       throw new ForbiddenException('Acesso negado');
     }
 
-    return chart;
+    const reels = this.reelsService.getReelsForChart(
+      (chart.chartData as any).planets,
+    );
+
+    return { ...chart, reels };
   }
 
   async remove(id: string, requester: User): Promise<void> {
