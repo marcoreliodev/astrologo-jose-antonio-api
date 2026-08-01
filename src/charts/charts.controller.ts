@@ -23,28 +23,31 @@ import { GeoSearchDto } from './dto/geo-search.dto';
 @ApiTags('Charts')
 @ApiBearerAuth()
 @Controller('charts')
-@UseGuards(AuthGuard('jwt'))
 export class ChartsController {
   constructor(private readonly chartsService: ChartsService) {}
 
   @Get('cities')
+  @ApiOperation({ summary: 'Buscar cidades para obter lat/lon' })
   searchCities(@Query() query: GeoSearchDto) {
     return this.chartsService.searchCities(query.place);
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Gerar e salvar mapa astral' })
   create(@Request() req, @Body() dto: CreateChartDto) {
     return this.chartsService.create(req.user.id, dto);
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Listar meus mapas astrais' })
   findAll(@Request() req) {
     return this.chartsService.findAllByUser(req.user.id);
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Buscar mapa astral por ID' })
   findOne(@Param('id') id: string, @Request() req) {
     return this.chartsService.findOne(id, req.user);
@@ -52,6 +55,7 @@ export class ChartsController {
 
   @Delete(':id')
   @HttpCode(204)
+  @UseGuards(AuthGuard('jwt'))
   @ApiOperation({ summary: 'Remover mapa astral' })
   remove(@Param('id') id: string, @Request() req) {
     return this.chartsService.remove(id, req.user);
